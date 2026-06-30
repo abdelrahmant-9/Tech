@@ -1964,6 +1964,123 @@
         animation: none
       }
     }
+
+    /* ===================== MODERN LAYER ===================== */
+    :root {
+      --pink: #a855f7;
+      --aurora: 0 0 60px rgba(168, 130, 247, .25);
+    }
+
+    /* film grain — subtle modern texture */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: .035;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* third aurora orb for richer depth */
+    .site-bg::after {
+      content: "";
+      position: absolute;
+      width: 40vw;
+      height: 40vw;
+      border-radius: 50%;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(168, 130, 247, .45), transparent 70%);
+      filter: blur(120px);
+      opacity: .14;
+      animation: bgfloat 32s ease-in-out infinite reverse;
+    }
+
+    /* deeper glass on nav + panels */
+    nav {
+      backdrop-filter: blur(18px) saturate(140%);
+    }
+
+    nav.scrolled {
+      backdrop-filter: blur(22px) saturate(160%);
+    }
+
+    /* cursor spotlight on field cards */
+    .card>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .35s;
+      background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(56, 189, 248, .16), transparent 62%);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    /* shine sweep on primary buttons + nav cta */
+    .btn-primary,
+    .nav-cta {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after,
+    .nav-cta::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(110deg, transparent, rgba(255, 255, 255, .45), transparent);
+      transform: skewX(-18deg);
+      transition: left .6s cubic-bezier(.2, .8, .2, 1);
+      pointer-events: none;
+    }
+
+    .btn-primary:hover::after,
+    .nav-cta:hover::after {
+      left: 130%;
+    }
+
+    /* gradient-text glow on hero headline */
+    .hero h1 .grad {
+      filter: drop-shadow(0 0 26px rgba(56, 189, 248, .28));
+    }
+
+    /* crisper focus ring system-wide */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      .site-bg::after,
+      body::after {
+        animation: none
+      }
+
+      .btn-primary::after,
+      .nav-cta::after {
+        display: none
+      }
+    }
   </style>
 </head>
 
@@ -2720,6 +2837,18 @@
     makeParticles(document.getElementById('hero3d'), { density: 9000, maxPts: 140, link: 130, interactive: true });
     // full-page background: calmer, non-interactive, lighter
     makeParticles(document.getElementById('bg3d'), { fullPage: true, density: 20000, maxPts: 80, link: 150, interactive: false, dotAlpha: .6, lineAlpha: .14 });
+  </script>
+  <script>
+    // ---- cursor spotlight on field cards ----
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.card').forEach(function (card) {
+        card.addEventListener('pointermove', function (e) {
+          var r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+          card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+        });
+      });
+    }
   </script>
 </body>
 
