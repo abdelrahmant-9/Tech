@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مجال التيك | رحلتك للفرص والمبادرات</title>
+<meta name="description" content="دليلك لمجال التكنولوجيا: كل المجالات، ومبادرات الدولة المجانية، ولينكاتها الرسمية في مكان واحد.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="مجال التيك | دليلك للمجالات والمبادرات المجانية">
+<meta property="og:description" content="أي حد يقدر يدخل عالم التكنولوجيا مهما كانت كليته. المجالات، ومبادرات الدولة المجانية، ولينكاتها الرسمية، في مكان واحد.">
+<meta property="og:image" content="https://abdelrahmant-9.github.io/Tech/og-image.png">
+<meta property="og:url" content="https://abdelrahmant-9.github.io/Tech/">
+<meta property="og:locale" content="ar_EG">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="%230B0D10"/><path d="M32 10 L38 26 L54 32 L38 38 L32 54 L26 38 L10 32 L26 26 Z" fill="%2338BDF8"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0D10;
+  --panel:#12151A;
+  --ink:#ECEAE4;
+  --ink-soft:#c9c7c0;
+  --muted:#8b9099;
+  --line:rgba(236,234,228,.14);
+  --cyan:#38BDF8;
+  --violet:#2563EB;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);font-family:'Cairo',sans-serif;
+  line-height:1.8;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+.mono{font-family:'Space Mono',monospace;direction:ltr;display:inline-block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--violet);color:#fff}
+html{scrollbar-width:thin;scrollbar-color:rgba(56,189,248,.35) transparent}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#2a2f37;border-radius:8px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--cyan)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* progress + to top */
+#scrollbar{position:fixed;top:0;right:0;left:0;height:2px;z-index:200;transform-origin:right;transform:scaleX(0);background:var(--cyan)}
+#toTop{position:fixed;bottom:26px;left:26px;z-index:150;width:50px;height:50px;border-radius:50%;
+  border:1px solid var(--line);background:rgba(11,13,16,.8);backdrop-filter:blur(8px);color:var(--ink);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transform:translateY(14px);
+  transition:opacity .3s,visibility .3s,transform .3s,background .2s,color .2s}
+#toTop.show{opacity:1;visibility:visible;transform:none}
+#toTop:hover{background:var(--ink);color:var(--bg)}
+#toTop svg{width:22px;height:22px}
+
+/* subtle living background (kept from previous, toned down) */
+.site-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#bg3d{position:absolute;inset:0;width:100%;height:100%;opacity:.28}
+#obj3d{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+@media(max-width:860px){#obj3d{opacity:.3}}
+
+/* corner crop marks (flammini signature) */
+.crn{position:fixed;width:26px;height:26px;z-index:90;opacity:.55;pointer-events:none}
+.crn.tl{top:14px;right:14px;border-top:2px solid var(--ink);border-right:2px solid var(--ink)}
+.crn.tr{top:14px;left:14px;border-top:2px solid var(--ink);border-left:2px solid var(--ink)}
+.crn.bl{bottom:14px;right:14px;border-bottom:2px solid var(--ink);border-right:2px solid var(--ink)}
+.crn.br{bottom:14px;left:14px;border-bottom:2px solid var(--ink);border-left:2px solid var(--ink)}
+@media(max-width:900px){.crn{display:none}}
+
+nav,.hero,section,footer,.modal-overlay{position:relative;z-index:1}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;right:0;left:0;z-index:100;
+  background:rgba(11,13,16,.65);backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s, background .3s, transform .4s cubic-bezier(.4,0,.2,1)}
+nav.scrolled{border-bottom-color:var(--line);background:rgba(11,13,16,.88)}
+nav.nav-hidden{transform:translateY(-100%)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:78px;gap:20px}
+.brand-block{line-height:1.35}
+.b-name{font-weight:900;font-size:17px}
+.b-role{font-size:12.5px;color:var(--muted);font-weight:600}
+.nav-links{display:flex;gap:30px;font-size:15px;font-weight:700}
+.nav-links a{color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{border:1px solid var(--ink);padding:10px 26px;border-radius:999px;font-weight:800;font-size:14px;
+  transition:background .25s,color .25s}
+.nav-cta:hover{background:var(--ink);color:var(--bg)}
+@media(max-width:860px){.nav-links{display:none}}
+
+/* ---------- hero ---------- */
+.hero{min-height:100vh;display:flex;align-items:center;padding:140px 0 80px}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--muted);
+  margin-bottom:34px;letter-spacing:.4px}
+.hero-tag::before{content:"";width:34px;height:1px;background:var(--muted)}
+.hero h1{
+  font-size:clamp(34px,5.4vw,72px);font-weight:900;line-height:1.35;letter-spacing:-.5px;max-width:1080px;
+}
+.hero h1 .acc{color:var(--cyan)}
+.chips{display:flex;gap:12px;flex-wrap:wrap;margin-top:44px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:9px 20px;font-size:14.5px;font-weight:700;color:var(--ink-soft)}
+.chip.hl{border-color:rgba(56,189,248,.5);color:var(--cyan)}
+.scroll-hint{margin-top:70px;color:var(--muted);font-size:13.5px;font-weight:700;display:inline-flex;align-items:center;gap:10px}
+.scroll-hint svg{width:16px;height:16px;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* ---------- section frame ---------- */
+section.block{padding:130px 0}
+.sec-head{margin-bottom:64px}
+.sec-line{font-size:clamp(38px,6.4vw,86px);font-weight:900;line-height:1.15;letter-spacing:-1px}
+.sec-label{display:inline-flex;align-items:center;gap:14px;margin:10px 4px;color:var(--cyan);font-weight:800;font-size:15px}
+.sec-label svg{width:18px;height:18px}
+.sec-sub{color:var(--muted);font-size:18px;max-width:640px;margin-top:22px;font-weight:600}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1;transform:none}
+.stagger > *{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.stagger.in > *{opacity:1;transform:none}
+.stagger.in > *:nth-child(1){transition-delay:.04s}.stagger.in > *:nth-child(2){transition-delay:.1s}
+.stagger.in > *:nth-child(3){transition-delay:.16s}.stagger.in > *:nth-child(4){transition-delay:.22s}
+.stagger.in > *:nth-child(5){transition-delay:.28s}.stagger.in > *:nth-child(6){transition-delay:.34s}
+.stagger.in > *:nth-child(7){transition-delay:.4s}.stagger.in > *:nth-child(8){transition-delay:.46s}
+.stagger.in > *:nth-child(9){transition-delay:.52s}.stagger.in > *:nth-child(10){transition-delay:.58s}
+
+/* ---------- stats ---------- */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.stat-cell{padding:44px 26px;border-bottom:1px solid var(--line)}
+.stat-cell + .stat-cell{border-right:1px solid var(--line)}
+.stat-cell .n{font-size:clamp(46px,6vw,84px);font-weight:900;line-height:1;color:var(--ink)}
+.stat-cell .n .u{color:var(--cyan)}
+.stat-cell .l{color:var(--muted);font-size:15.5px;font-weight:700;margin-top:14px}
+.bars{margin-top:56px;max-width:860px}
+.bar-row{margin-bottom:30px}
+.bar-head{display:flex;justify-content:space-between;align-items:baseline;font-size:16px;font-weight:700;margin-bottom:12px;gap:16px}
+.bar-head .pct{font-size:26px;font-weight:900;direction:ltr;color:var(--cyan)}
+.bar-row.tech .bar-head .pct{color:var(--ink-soft)}
+.bar-track{height:3px;background:var(--line)}
+.bar-fill{height:100%;width:0;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.bar-fill.nontech{background:var(--cyan)}
+.bar-fill.tech{background:var(--ink-soft)}
+.stat-note{margin-top:34px;font-size:17px;color:var(--ink-soft);font-weight:600;max-width:760px}
+.stat-note .hl{color:var(--cyan);font-weight:800}
+@media(max-width:820px){.stat-row{grid-template-columns:1fr}.stat-cell + .stat-cell{border-right:none}}
+
+/* ---------- list rows (fields & initiatives) ---------- */
+.list{border-top:1px solid var(--line)}
+.lrow{display:flex;align-items:center;gap:26px;padding:30px 8px;border-bottom:1px solid var(--line);
+  cursor:pointer;transition:padding .3s, background .3s;position:relative}
+.lrow:hover{padding-right:26px;background:rgba(236,234,228,.03)}
+.lrow .idx{font-family:'Space Mono',monospace;direction:ltr;font-size:13px;color:var(--muted);flex:0 0 34px}
+.lrow .lr-main{flex:1;min-width:0}
+.lrow h3{font-size:clamp(21px,3vw,34px);font-weight:800;line-height:1.3}
+.lrow .en{font-family:'Space Mono',monospace;direction:ltr;font-size:13px;color:var(--cyan);display:block;margin-top:2px}
+.lrow .desc{color:var(--muted);font-size:15px;font-weight:600;margin-top:6px;max-width:720px}
+.lrow .go{flex:0 0 auto;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .25s}
+.lrow:hover .go{background:var(--cyan);border-color:var(--cyan);color:#06121a;transform:rotate(-45deg)}
+.lrow .go svg{width:18px;height:18px}
+.list-hint{margin-top:22px;color:var(--muted);font-size:14.5px;font-weight:700}
+.badge{font-size:11.5px;font-weight:800;padding:4px 12px;border-radius:999px;border:1px solid;vertical-align:middle;margin-right:10px}
+.badge.open{color:var(--cyan);border-color:rgba(56,189,248,.6)}
+.badge.closed{color:var(--muted);border-color:var(--line)}
+.wa-follow{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:7px 16px;border-radius:999px;
+  border:1px solid rgba(37,211,102,.5);color:#4ade80;font-size:13.5px;font-weight:800;cursor:pointer;transition:background .2s}
+.wa-follow:hover{background:rgba(37,211,102,.12)}
+.wa-follow svg{width:16px;height:16px}
+
+/* ---------- no-code grid ---------- */
+.ncgrid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-right:1px solid var(--line)}
+.nc{padding:34px 26px;border-bottom:1px solid var(--line);border-left:1px solid var(--line);transition:background .3s}
+.nc:hover{background:rgba(236,234,228,.04)}
+.nc h5{font-size:19px;font-weight:800}
+.nc .nc-en{font-family:'Space Mono',monospace;direction:ltr;font-size:12px;color:var(--cyan);display:block;margin-top:2px}
+.nc p{font-size:14px;color:var(--muted);font-weight:600;margin-top:10px}
+@media(max-width:980px){.ncgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.ncgrid{grid-template-columns:1fr}}
+
+/* ---------- sub lists (two columns) ---------- */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:70px;margin-top:90px}
+.subcol h4{font-size:23px;font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.subcol h4 svg{width:20px;height:20px;color:var(--cyan)}
+.subitem{display:block;padding:20px 4px;border-bottom:1px solid var(--line);transition:padding .25s}
+a.subitem:hover{padding-right:16px}
+.subitem h5{font-size:17.5px;font-weight:800}
+a.subitem h5{color:var(--ink)}
+a.subitem:hover h5{color:var(--cyan)}
+.subitem p{font-size:14.5px;color:var(--muted);font-weight:600;margin-top:3px}
+@media(max-width:760px){.two{grid-template-columns:1fr;gap:50px}}
+
+/* ---------- contact ---------- */
+.contact-sec{padding:150px 0 110px;text-align:center}
+.contact-sec .sec-label{justify-content:center}
+.contact-sec h2{font-size:clamp(44px,8vw,110px);font-weight:900;line-height:1.15;letter-spacing:-1px}
+.contact-sec .csub{color:var(--muted);font-size:18px;font-weight:600;margin-top:24px;max-width:560px;margin-inline:auto}
+.marquee-btn{display:block;margin:60px auto 0;max-width:760px;border:1px solid var(--ink);border-radius:999px;overflow:hidden;
+  padding:20px 0;position:relative;transition:background .3s,border-color .3s}
+.marquee-btn:hover{background:var(--cyan);border-color:var(--cyan)}
+.marquee-btn:hover .mq span{color:#06121a}
+.mq-win{overflow:hidden;direction:ltr;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+.mq{display:flex;align-items:center;width:max-content;animation:mq 14s linear infinite}
+.marquee-btn:hover .mq{animation-duration:7s}
+.mq span{font-size:23px;font-weight:900;color:var(--ink);padding:0 20px;white-space:nowrap;line-height:1.5}
+.mq .st{color:var(--cyan);font-size:14px;padding:0 4px}
+@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.contact-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:44px}
+.cl{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:999px;
+  padding:12px 24px;font-weight:800;font-size:15px;color:var(--ink-soft);transition:all .25s}
+.cl:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-2px)}
+.cl svg{width:19px;height:19px}
+.sign{margin-top:50px;color:var(--muted);font-size:14.5px;font-weight:700}
+
+.qr-wrap{margin-top:48px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.qr-card{background:#fff;padding:12px;border-radius:18px;line-height:0;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.qr-card img{width:150px;height:150px;display:block;border-radius:8px}
+.qr-hint{color:var(--muted);font-size:14.5px;font-weight:700}
+footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:var(--muted);font-size:13.5px;font-weight:600}
+
+/* ---------- start steps ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-right:1px solid var(--line)}
+.step{padding:36px 26px;border-bottom:1px solid var(--line);border-left:1px solid var(--line);transition:background .3s;position:relative}
+.step:hover{background:rgba(236,234,228,.04)}
+.step .snum{font-family:'Space Mono',monospace;direction:ltr;display:inline-block;font-size:14px;font-weight:700;color:var(--cyan);
+  border:1px solid rgba(56,189,248,.5);border-radius:999px;padding:4px 14px;margin-bottom:18px}
+.step h3{font-size:20px;font-weight:800;line-height:1.4}
+.step p{font-size:14.5px;color:var(--muted);font-weight:600;margin-top:8px}
+.step a{color:var(--cyan);font-weight:800}
+.step a:hover{text-decoration:underline}
+@media(max-width:980px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+
+/* ---------- FAQ ---------- */
+.faq{border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:26px 6px;font-size:clamp(17px,2.2vw,23px);font-weight:800;transition:color .2s}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--cyan)}
+.faq .plus{width:36px;height:36px;border:1px solid var(--line);border-radius:50%;flex:0 0 auto;position:relative;transition:transform .3s,background .3s,border-color .3s}
+.faq .plus::before,.faq .plus::after{content:"";position:absolute;background:currentColor;top:50%;left:50%;transform:translate(-50%,-50%)}
+.faq .plus::before{width:14px;height:2px}
+.faq .plus::after{width:2px;height:14px}
+.faq details[open] .plus{transform:rotate(45deg);background:var(--cyan);border-color:var(--cyan);color:#06121a}
+.faq .ans{padding:0 6px 28px;color:var(--muted);font-size:16.5px;font-weight:600;max-width:780px;line-height:1.9}
+.faq .ans .hl{color:var(--cyan);font-weight:800}
+
+/* ---------- modal ---------- */
+.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(5,7,10,.85);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal{background:var(--panel);border:1px solid var(--line);border-radius:20px;
+  max-width:640px;width:100%;max-height:86vh;position:relative;display:flex;flex-direction:column;overflow:hidden;
+  transform:translateY(26px);transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.modal-overlay.open .modal{transform:none}
+.modal-inner{padding:64px 32px 38px;overflow-y:auto;overflow-x:hidden;
+  scrollbar-width:thin;scrollbar-color:rgba(56,189,248,.4) transparent}
+.modal-inner::-webkit-scrollbar{width:6px}
+.modal-inner::-webkit-scrollbar-track{background:transparent}
+.modal-inner::-webkit-scrollbar-thumb{background:rgba(56,189,248,.4);border-radius:8px}
+.modal-close{position:absolute;top:16px;left:16px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(11,13,16,.9);color:var(--ink-soft);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .2s,color .2s;z-index:5}
+.modal-close:hover{background:var(--ink);color:var(--bg)}
+.modal-icon{width:58px;height:58px;border-radius:14px;border:1px solid rgba(56,189,248,.5);color:var(--cyan);
+  display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.modal-icon svg{width:30px;height:30px}
+.modal h3{font-size:30px;font-weight:900;margin-bottom:2px}
+.modal .m-en{font-family:'Space Mono',monospace;direction:ltr;color:var(--cyan);font-size:14px;margin-bottom:24px;display:block}
+.modal .m-section{margin-bottom:22px}
+.modal .m-section h5{font-size:16.5px;font-weight:900;color:var(--cyan);margin-bottom:8px}
+.modal .m-section p,.modal .m-section li{color:var(--ink-soft);font-size:16px;line-height:1.8}
+.modal .m-section ul{list-style:none}
+.modal .m-section li{padding-right:20px;position:relative;margin-bottom:6px}
+.modal .m-section li::before{content:"◆";position:absolute;right:0;color:var(--cyan);font-size:10px;top:7px}
+.modal .m-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.modal .m-tool{font-family:'Space Mono',monospace;direction:ltr;font-size:12.5px;padding:6px 14px;border-radius:999px;
+  border:1px solid var(--line);color:var(--ink-soft)}
+.modal .m-fit{border:1px solid rgba(56,189,248,.35);border-radius:12px;padding:16px;margin-top:8px}
+.modal .m-fit p{color:var(--ink);font-weight:700}
+@media(max-width:560px){.modal-inner{padding:60px 22px 30px}.modal h3{font-size:24px}}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal,.stagger > *{opacity:1;transform:none}
+  #bg3d,#obj3d{display:none}
+}
+</style>
+</head>
+<body>
+<div id="scrollbar"></div>
+<button id="toTop" aria-label="ارجع لأول الصفحة">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
+</button>
+<div class="site-bg"><canvas id="bg3d"></canvas><canvas id="obj3d"></canvas></div>
+<div class="crn tl"></div><div class="crn tr"></div><div class="crn bl"></div><div class="crn br"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="wrap nav-in">
+    <div class="brand-block">
+      <div class="b-name">عبدالرحمن طارق</div>
+      <div class="b-role">مهندس اختبار جودة · QA Engineer</div>
+    </div>
+    <div class="nav-links">
+      <a href="#stats">بالأرقام</a>
+      <a href="#fields">المجالات</a>
+      <a href="#nocode">بدون كود</a>
+      <a href="#opp">المبادرات</a>
+      <a href="#start">ابدأ منين</a>
+    </div>
+    <a href="#contact" class="nav-cta">تواصل معايا</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-tag">دليلك لمجال التكنولوجيا</div>
+    <h1>أهلاً! أي حد يقدر يدخل <span class="acc">عالم التكنولوجيا</span> مهما كانت كليته. المجالات، ومبادرات الدولة المجانية، ولينكاتها الرسمية، كلها هنا في مكان واحد.</h1>
+    <div class="chips">
+      <span class="chip hl">+14 مبادرة مجانية</span>
+      <span class="chip">مجالات بكود ومن غيره</span>
+      <span class="chip">لينكات رسمية</span>
+      <span class="chip">+7 آلاف من خلفية غير تقنية اشتغلوا</span>
+    </div>
+    <div class="scroll-hint">انزل تحت وشوف بنفسك
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"></path></svg>
+    </div>
+  </div>
+</header>
+
+<!-- STATS -->
+<section class="block" id="stats">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-line">مش لازم تكون</div>
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+        بالأرقام الرسمية
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+      </div>
+      <div class="sec-line">في كلية تقنية</div>
+      <p class="sec-sub">دي أرقام رسمية لخريجي مبادرة «رواد مصر الرقمية». شوف بنفسك نسبة اللي دخلوا المجال من كليات مالهاش علاقة بالبرمجة.</p>
+    </div>
+
+    <div class="stat-row reveal stagger">
+      <div class="stat-cell"><div class="n"><span class="u"><span data-count="7000">0</span>+</span></div><div class="l">اتخرجوا من خلفية غير تقنية واشتغلوا فعلاً في شركات</div></div>
+      <div class="stat-cell"><div class="n" data-count="20500">0</div><div class="l">اتدمجوا في سوق العمل بعد التخرج</div></div>
+      <div class="stat-cell"><div class="n"><span data-count="36">0</span><span class="u">%</span></div><div class="l">من المتدربين من كليات مش تقنية</div></div>
+    </div>
+
+    <div class="bars reveal">
+      <div class="bar-row nontech">
+        <div class="bar-head"><span>كليات نظرية وطبية (تجارة، حقوق، آداب، طب…)</span><span class="pct" data-pct="36">0%</span></div>
+        <div class="bar-track"><div class="bar-fill nontech" data-w="36"></div></div>
+      </div>
+      <div class="bar-row tech">
+        <div class="bar-head"><span>كليات هندسة وحاسبات</span><span class="pct" data-pct="64">0%</span></div>
+        <div class="bar-track"><div class="bar-fill tech" data-w="64"></div></div>
+      </div>
+      <p class="stat-note">يعني حوالي <span class="hl">ثلث اللي اتخرجوا</span> دخلوا من كليات <span class="hl">مالهاش علاقة بالبرمجة</span>، وكتير منهم بقى شغّال في شركات. الباب مفتوح.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FIELDS -->
+<section class="block" id="fields">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-line">المجال أوسع</div>
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+        المجالات
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+      </div>
+      <div class="sec-line">مما تتخيل</div>
+      <p class="sec-sub">مجال التكنولوجيا مش برمجة وبس، فيه حتة تناسب كل شخصية ولكل اهتمام. اضغط على أي مجال وشوف تفاصيله.</p>
+    </div>
+
+    <div class="list stagger reveal" id="fieldsList">
+      <div class="lrow" data-field="dev" role="button" tabindex="0"><span class="idx">01</span><div class="lr-main"><h3>تطوير البرمجيات</h3><span class="en">Software Development</span><p class="desc">بناء التطبيقات والمواقع من الصفر</p></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span></div>
+      <div class="lrow" data-field="qa" role="button" tabindex="0"><span class="idx">02</span><div class="lr-main"><h3>اختبار الجودة</h3><span class="en">Quality Assurance (QA)</span><p class="desc">تتأكد إن البرنامج شغال صح وتكتشف الأخطاء</p></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span></div>
+      <div class="lrow" data-field="ai" role="button" tabindex="0"><span class="idx">03</span><div class="lr-main"><h3>الذكاء الاصطناعي والبيانات</h3><span class="en">AI &amp; Data Science</span><p class="desc">تعليم الكمبيوتر يفكّر ويحلّل بيانات ضخمة</p></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span></div>
+      <div class="lrow" data-field="cyber" role="button" tabindex="0"><span class="idx">04</span><div class="lr-main"><h3>الأمن السيبراني</h3><span class="en">Cybersecurity</span><p class="desc">حماية الأنظمة والبيانات من الاختراق</p></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span></div>
+      <div class="lrow" data-field="design" role="button" tabindex="0"><span class="idx">05</span><div class="lr-main"><h3>الفنون الرقمية والتصميم</h3><span class="en">UI/UX &amp; Digital Arts</span><p class="desc">تصميم شكل التطبيقات وتجربة المستخدم</p></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span></div>
+      <div class="lrow" data-field="cloud" role="button" tabindex="0"><span class="idx">06</span><div class="lr-main"><h3>الحوسبة السحابية</h3><span class="en">Cloud Computing</span><p class="desc">إدارة وبناء البنية التحتية على السحابة</p></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span></div>
+      <div class="lrow" data-field="games" role="button" tabindex="0"><span class="idx">07</span><div class="lr-main"><h3>الألعاب والأنظمة المدمجة</h3><span class="en">Game Dev &amp; Embedded (IoT)</span><p class="desc">برمجة الألعاب والأجهزة الذكية والروبوتات</p></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span></div>
+      <div class="lrow" data-field="networks" role="button" tabindex="0"><span class="idx">08</span><div class="lr-main"><h3>الشبكات والبنية التحتية</h3><span class="en">Networks &amp; Infrastructure</span><p class="desc">تشغيل وحماية شبكات الشركات</p></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span></div>
+      <div class="lrow" data-field="telecom" role="button" tabindex="0"><span class="idx">09</span><div class="lr-main"><h3>الاتصالات وتقنيات 5G</h3><span class="en">Telecom &amp; 5G</span><p class="desc">شبكات المحمول والألياف الضوئية</p></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span></div>
+      <div class="lrow" data-field="freelance" role="button" tabindex="0"><span class="idx">10</span><div class="lr-main"><h3>العمل الحر</h3><span class="en">Freelancing</span><p class="desc">اشتغل أونلاين مع العالم واكسب بالدولار</p></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span></div>
+    </div>
+    <p class="list-hint">اضغط على أي مجال عشان تعرف بيشتغل بإيه، هتتعلّم فيه إيه، وفرص الشغل اللي بتفتحها.</p>
+  </div>
+</section>
+
+<!-- NO CODE -->
+<section class="block" id="nocode">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-line">بتكره الكود؟</div>
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+        من غير برمجة
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+      </div>
+      <div class="sec-line">عادي، مش مشكلة</div>
+      <p class="sec-sub">٨ مجالات تقنية تقدر تشتغل فيها وتكسب كويس من غير ما تكتب سطر كود واحد.</p>
+    </div>
+
+    <div class="ncgrid reveal stagger">
+      <div class="nc"><h5>تصميم UI/UX</h5><span class="nc-en">UI/UX Design</span><p>شكل التطبيق وتجربة المستخدم بأداة Figma</p></div>
+      <div class="nc"><h5>جرافيك وموشن</h5><span class="nc-en">Graphic &amp; Motion</span><p>لوجوهات وإعلانات وفيديو متحرك</p></div>
+      <div class="nc"><h5>تسويق رقمي</h5><span class="nc-en">Digital Marketing</span><p>إعلانات وتحليل حملات، صفر كود</p></div>
+      <div class="nc"><h5>مونتاج فيديو</h5><span class="nc-en">Video Editing</span><p>مونتاج محتوى لسوق ضخم ومتنامي</p></div>
+      <div class="nc"><h5>تحليل بيانات</h5><span class="nc-en">Data Analysis</span><p>تقارير ولوحات بـ Excel و Power BI</p></div>
+      <div class="nc"><h5>إدارة المنتجات</h5><span class="nc-en">Product Management</span><p>تنظّم وتدير اللي بيكتبوا الكود</p></div>
+      <div class="nc"><h5>أدوات بدون كود</h5><span class="nc-en">No-Code Tools</span><p>تبني تطبيق بالسحب: Webflow / Glide</p></div>
+      <div class="nc"><h5>كتابة المحتوى</h5><span class="nc-en">Content &amp; Prompt Eng.</span><p>محتوى تقني وكتابة أوامر للـ AI</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPORTUNITIES -->
+<section class="block" id="opp">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-line">كل المبادرات</div>
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+        مجانية 100%
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+      </div>
+      <div class="sec-line">في مكان واحد</div>
+      <p class="sec-sub">كل المبادرات دي من وزارة الاتصالات، مجانية بالكامل والدولة هي اللي بتموّلها. اضغط على أي واحدة عشان توصل لموقعها الرسمي وتقدّم.</p>
+    </div>
+
+    <div class="list stagger reveal">
+      <a class="lrow" href="https://depi.gov.eg" target="_blank" rel="noopener">
+        <span class="idx">01</span>
+        <div class="lr-main">
+          <h3>رواد مصر الرقمية (DEPI) <span class="badge closed">التقديم مُغلق حالياً</span></h3>
+          <span class="en">depi.gov.eg</span>
+          <p class="desc">منحة لكل الكليات، مدة ٦ شهور (تدريب + إرشاد مهني)، نظام هجين. مسارات: ذكاء اصطناعي، بيانات، أمن سيبراني، تطوير برمجيات، اختبار، فنون رقمية + إنجليزي وعمل حر.</p>
+          <span class="wa-follow" data-wa="https://whatsapp.com/channel/0029VaIo36h4CrfoXs9Nts3F">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.607z"/></svg>
+            تابع قناة DEPI على واتساب ↗
+          </span>
+        </div>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span>
+      </a>
+      <a class="lrow" href="https://www.digilians.gov.eg" target="_blank" rel="noopener">
+        <span class="idx">02</span>
+        <div class="lr-main"><h3>الرواد الرقميون (Digilians)</h3><span class="en">digilians.gov.eg</span>
+        <p class="desc">بالتعاون مع الأكاديمية العسكرية المصرية. من ١٨ لـ ٣٢ سنة، كل التخصصات. ٣ مسارات: دبلوم مكثف (٤ شهور)، دبلوم متخصص (٩ شهور)، ماجستير مهني (١٢ شهر بشهادة دولية).</p></div>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span>
+      </a>
+      <a class="lrow" href="https://mcit.gov.eg/ar/Human_Capacity" target="_blank" rel="noopener">
+        <span class="idx">03</span>
+        <div class="lr-main"><h3>مستقبلنا رقمي + وظيفة تك</h3><span class="en">mcit.gov.eg</span>
+        <p class="desc">«مستقبلنا رقمي» للعمل الحر والشغل أونلاين، تبدأها وإنت طالب. و«وظيفة تك» بتموّل التدريب وبعدين بتساعدك تلاقي شغل فعلي.</p></div>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span>
+      </a>
+      <a class="lrow" href="https://www.nti.sci.eg" target="_blank" rel="noopener">
+        <span class="idx">04</span>
+        <div class="lr-main"><h3>برامج المعهد القومي للاتصالات (NTI)</h3><span class="en">nti.sci.eg</span>
+        <p class="desc">برنامجين للطلاب والخريجين: «التدريب الصيفي» (١٢٠ ساعة في ٤ أسابيع، أونلاين أو حضوري) و«شباب مصر الرقمية» (دراسة مسائية مرنة). مسارات: أمن سيبراني، AI، حوسبة سحابية، أنظمة مدمجة وIoT، شبكات، و5G والألياف الضوئية.</p></div>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span>
+      </a>
+      <a class="lrow" href="https://iti.gov.eg" target="_blank" rel="noopener">
+        <span class="idx">05</span>
+        <div class="lr-main"><h3>معسكر ITI الصيفي <span class="badge open">مفتوح للتقديم</span></h3><span class="en">iti.gov.eg · Summer Code Camp</span>
+        <p class="desc">معهد تكنولوجيا المعلومات. تدريب صيفي مجاني للطلاب الجامعيين بفروع ITI ومراكز «كرياتيفا» في المحافظات. مسارات: اختبار البرمجيات وضمان الجودة، أمن سيبراني، AI، حوسبة سحابية، شبكات، فنون رقمية، وBIS. التقديم فتح ٢٠ يونيو.</p></div>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span>
+      </a>
+      <a class="lrow" href="https://mcit.gov.eg/ar/Human_Capacity/MCIT/Digital_Egypt_Builders_Initiative" target="_blank" rel="noopener">
+        <span class="idx">06</span>
+        <div class="lr-main"><h3>بناة مصر الرقمية · ماجستير مهني</h3><span class="en">Digital Egypt Builders</span>
+        <p class="desc">منحة ماجستير مهني من جامعات عالمية، لخريجي الهندسة والحاسبات والعلوم المتفوّقين. برنامجين: احترافي (٨ شهور) وذوي خبرة (١٢ شهر). مجالات: AI، بيانات، حوسبة سحابية، أمن سيبراني، أنظمة مدمجة، فنون رقمية.</p></div>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span>
+      </a>
+      <a class="lrow" href="https://mcit.gov.eg/ar/Human_Capacity" target="_blank" rel="noopener">
+        <span class="idx">07</span>
+        <div class="lr-main"><h3>إفريقيا لإبداع الألعاب والتطبيقات</h3><span class="en">mcit.gov.eg</span>
+        <p class="desc">مبادرة رئاسية لتأهيل الشباب على تطوير الألعاب والتطبيقات الرقمية بأحدث التقنيات، ودعم تأسيس شركات ناشئة. ٤ مستويات من الأساسي للمتميّز.</p></div>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg></span>
+      </a>
+    </div>
+
+    <div class="two reveal">
+      <div class="subcol">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> برامج متخصصة وتدريب موجّه</h4>
+        <a class="subitem" href="https://iti.gov.eg" target="_blank" rel="noopener">
+          <h5>منحة الـ ٩ شهور من معهد ITI ↗</h5><p>أشهر برنامج تدريبي ممول بالكامل للخريجين الجدد، +٣٠ مسار، شهادات دولية. مفتوح لكل الكليات (التقديم صيفاً، الدراسة أكتوبر).</p>
+        </a>
+        <a class="subitem" href="https://www.nti.sci.eg" target="_blank" rel="noopener">
+          <h5>منحة الـ ٩ شهور من المعهد القومي للاتصالات (NTI) ↗</h5><p>تدريب متخصص ومتعمّق في مجال واحد لحد الاحتراف.</p>
+        </a>
+        <a class="subitem" href="https://mcit.gov.eg/ar/Human_Capacity" target="_blank" rel="noopener">
+          <h5>كل مبادرات الوزارة ↗</h5><p>صفحة بناء القدرات الرقمية الرسمية، فيها كل البرامج ومواعيدها.</p>
+        </a>
+      </div>
+      <div class="subcol">
+        <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg> للمدارس والنشء</h4>
+        <a class="subitem" href="https://deci.gov.eg" target="_blank" rel="noopener">
+          <h5>أشبال مصر الرقمية ↗</h5><p>من أولى إعدادي لـ تانية ثانوي، أساسيات البرمجة والتفكير التقني.</p>
+        </a>
+        <a class="subitem" href="https://mcit.gov.eg/ar/Human_Capacity" target="_blank" rel="noopener">
+          <h5>براعم مصر الرقمية ↗</h5><p>من رابعة لـ سادسة ابتدائي، لوعي تكنولوجي مبكر.</p>
+        </a>
+        <div class="subitem"><h5 style="color:var(--cyan)">+٢٤٠ ألف متدرب</h5><p>إجمالي اللي اتدرّبوا في أشبال وبراعم لحد دلوقتي.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- START PLAN -->
+<section class="block" id="start">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-line">تايه؟ دي خطة</div>
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+        خطة البداية
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+      </div>
+      <div class="sec-line">تمشي عليها</div>
+      <p class="sec-sub">أبسط طريق تبدأ بيه من غير تفكير زيادة. أربع خطوات وتكون بدأت فعلاً.</p>
+    </div>
+
+    <div class="steps reveal stagger">
+      <div class="step">
+        <span class="snum">01</span>
+        <h3>اختار مجال شدّك</h3>
+        <p>ارجع لقسم <a href="#fields">المجالات</a>، اقرا التفاصيل، واختار واحد أو اتنين حاسس إنهم قريبين من شخصيتك.</p>
+      </div>
+      <div class="step">
+        <span class="snum">02</span>
+        <h3>اتفرج وجرّب يوم واحد</h3>
+        <p>دوّر على يوتيوب "يعني إيه + اسم المجال" واتفرج على فيديو أو اتنين. لو حسيت بفضول أكتر، ده مؤشر كويس.</p>
+      </div>
+      <div class="step">
+        <span class="snum">03</span>
+        <h3>قدّم في مبادرة</h3>
+        <p>افتح <a href="#opp">المبادرات</a> وقدّم في المفتوح منها، وتابع قناة DEPI عشان تعرف مواعيد الباقي أول بأول.</p>
+      </div>
+      <div class="step">
+        <span class="snum">04</span>
+        <h3>التزم وكمّل</h3>
+        <p>ساعة واحدة كل يوم أحسن من ١٠ ساعات مرة في الأسبوع. الاستمرارية هي اللي بتفرق مش الذكاء.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="block" id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-line">أسئلة بتتسأل</div>
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+        أسئلة شايعة
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+      </div>
+      <div class="sec-line">كتير</div>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>محتاج لابتوب قوي عشان أبدأ؟<span class="plus"></span></summary>
+        <p class="ans">لأ. أي جهاز بيفتح متصفح يكفي للبداية في معظم المجالات، وكتير من الأدوات بقت شغالة أونلاين. والمبادرات الحضورية زي ITI وكرياتيفا بتوفرلك معامل مجهزة، فمتخليش الجهاز عذر يأخرك.</p>
+      </details>
+      <details>
+        <summary>إنجليزيتي ضعيفة، أعمل إيه؟<span class="plus"></span></summary>
+        <p class="ans">ابدأ عادي واشتغل على لغتك <span class="hl">بالتوازي</span>، مش قبلها. فيه محتوى عربي ممتاز يكفيك في الأول، ومعظم المبادرات زي DEPI فيها تدريب إنجليزي جوّاها أصلاً. اللغة بتتحسن بالممارسة أثناء المذاكرة نفسها.</p>
+      </details>
+      <details>
+        <summary>المبادرات دي بشهادات معتمدة؟<span class="plus"></span></summary>
+        <p class="ans">آه، شهادات رسمية من وزارة الاتصالات والمعاهد القومية، وبعض البرامج فيها <span class="hl">شهادات دولية</span> من شركات عالمية. والأهم من الشهادة نفسها: المشاريع اللي بتبنيها أثناء التدريب، دي اللي الشركات بتبص عليها.</p>
+      </details>
+      <details>
+        <summary>أقدر أوفّق بين الكلية والتدريب؟<span class="plus"></span></summary>
+        <p class="ans">معظم المبادرات متصممة أصلاً للطلاب: فيها أونلاين، ومسائي، وصيفي. التدريب الصيفي بتاع NTI وITI بيحصل في الأجازة، وشباب مصر الرقمية دراسة مسائية مرنة. ساعة أو اتنين في اليوم كفاية جداً.</p>
+      </details>
+      <details>
+        <summary>مفيش مبادرة مفتوحة دلوقتي تناسبني، أعمل إيه؟<span class="plus"></span></summary>
+        <p class="ans">متستناش. ابدأ تعلّم ذاتي مجاني في المجال اللي اختارته (يوتيوب فيه كنوز)، وتابع <span class="hl">قناة DEPI على واتساب</span> وصفحة الوزارة عشان تعرف مواعيد فتح التقديم بدري. اللي بيبدأ قبل المبادرة بيكسب فيها أضعاف.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-sec" id="contact">
+  <div class="wrap">
+    <div class="sec-label reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+      تواصل معايا
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1"></path></svg>
+    </div>
+    <h2 class="reveal">جاهز تبدأ؟</h2>
+    <p class="csub reveal">لو عندك سؤال عن أي مجال أو مبادرة، ابعتلي وهرد عليك أول ما أشوف الرسالة.</p>
+
+    <a class="marquee-btn reveal" href="https://wa.me/201005118087?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%20%D9%8A%D8%A7%20%D8%A8%D8%B4%D9%85%D9%87%D9%86%D8%AF%D8%B3%20%D8%B9%D8%A8%D8%AF%D8%A7%D9%84%D8%B1%D8%AD%D9%85%D9%86%D8%8C%20%D8%A3%D9%86%D8%A7%20%D8%AC%D8%A7%D9%8A%20%D9%85%D9%86%20%D9%85%D9%88%D9%82%D8%B9%20%C2%AB%D9%85%D8%AC%D8%A7%D9%84%20%D8%A7%D9%84%D8%AA%D9%8A%D9%83%C2%BB%20%D9%88%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B3%D8%A3%D9%84%D9%83%20%D8%B9%D9%86%20%D8%A7%D9%84%D9%85%D8%AC%D8%A7%D9%84%20%D8%A7%D9%84%D9%85%D9%86%D8%A7%D8%B3%D8%A8%20%D9%84%D9%8A%D8%A7%20%D9%88%D8%A3%D8%A8%D8%AF%D8%A3%20%D9%85%D9%86%D9%8A%D9%86." target="_blank" rel="noopener" aria-label="ابعتلي على واتساب">
+      <div class="mq-win"><div class="mq">
+        <span>ابعتلي</span><span class="st">✦</span><span>ابعتلي</span><span class="st">✦</span><span>ابعتلي</span><span class="st">✦</span><span>ابعتلي</span><span class="st">✦</span><span>ابعتلي</span><span class="st">✦</span>
+        <span>ابعتلي</span><span class="st">✦</span><span>ابعتلي</span><span class="st">✦</span><span>ابعتلي</span><span class="st">✦</span><span>ابعتلي</span><span class="st">✦</span><span>ابعتلي</span><span class="st">✦</span>
+      </div></div>
+    </a>
+
+    <div class="contact-links reveal">
+      <a class="cl" href="https://www.linkedin.com/in/abelrahmantarek" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        لينكد إن ↗
+      </a>
+      <a class="cl" href="tel:+201005118087">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        <span class="mono">01005118087</span>
+      </a>
+    </div>
+
+    <div class="qr-wrap reveal">
+      <div class="qr-card"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAIAAAD3027yAAAEoklEQVR4nO3dwW7UMBRAUYpYIiT+/yOREPvwB85FxrUzc8626jSZzpUXb+x8XNf1BbjzdfcFwDNIBRKpQCIVSKQCiVQgkQokUoFEKpB8G//4+4+fn3Mdn+bP71+Dn87c7/iVZ4yvauaOZq753T4bVhVIpAKJVCCRCiRSgUQqkEgFEqlAIhVIbqb1Y+vm0zN2TdzP/Lu7Zvmv99mwqkAiFUikAolUIJEKJFKBRCqQSAUSqUAyNa0fW7f3+sxJ8Mxc/N12wD/xs2FVgUQqkEgFEqlAIhVIpAKJVCCRCiRSgWThtP6Jztyn/m474M9kVYFEKpBIBRKpQCIVSKQCiVQgkQokUoHEtP4fnDnL53NYVSCRCiRSgUQqkEgFEqlAIhVIpAKJVCBZOK1/twn0rjPnn/g9gDOvasyqAolUIJEKJFKBRCqQSAUSqUAiFUikAsnUtP7MZ6Kvs273/LrfHdt1ev8TWVUgkQokUoFEKpBIBRKpQCIVSKQCiVQg+biua/c1HGRmxnzmfvHXu6NdrCqQSAUSqUAiFUikAolUIJEKJFKBRCqQ3Ezrd52yvmuv+dgT99bveq/WWbfjf/zKVhVIpAKJVCCRCiRSgUQqkEgFEqlAIhVIDj0Jf918esauM+d3/e466z456+7XqgKJVCCRCiRSgUQqkEgFEqlAIhVIpALJtpPwz9wRfuaT2s/cH//Eq5phVYFEKpBIBRKpQCIVSKQCiVQgkQokUoHkZm/9E3ex7zop/fUm/ev+v+veK3vrYTOpQCIVSKQCiVQgkQokUoFEKpBIBZKbaf3rTaDXOfPM+XXW3e+Z5+RbVSCRCiRSgUQqkEgFEqlAIhVIpAKJVCC5OQl/13n1Z+4IX+fd3qtdk35762E5qUAiFUikAolUIJEKJFKBRCqQSAWShXvr173ymfPpXWcJ7LJrB/yY59bDZlKBRCqQSAUSqUAiFUikAolUIJEKJDd762e83vT6zB3wTzyRfmzXmQ1jVhVIpAKJVCCRCiRSgUQqkEgFEqlAIhVIpk7Cfzfvtqf/ieyth82kAolUIJEKJFKBRCqQSAUSqUAiFUgW7q1/oidOvs98yvuZf3eGVQUSqUAiFUikAolUIJEKJFKBRCqQSAWSm+fWP3F6PbZuEnzmzvt1Xu+OxqwqkEgFEqlAIhVIpAKJVCCRCiRSgUQqkNxM68fOnMjueq75Lmc+XX7GmXdkVYFEKpBIBRKpQCIVSKQCiVQgkQokUoFkalo/tm7meuac+MxJ/8yO/yeerOC59bCZVCCRCiRSgUQqkEgFEqlAIhVIpALJwmn9E83MtmfMnCq/7gT+M79vse4bBvbWw38gFUikAolUIJEKJFKBRCqQSAUSqUBiWn+EdTvCX28ev+7bCWNWFUikAolUIJEKJFKBRCqQSAUSqUAiFUgWTuvPPBl+nTPPjV83vd51iv6u99mqAolUIJEKJFKBRCqQSAUSqUAiFUikAsnUtP7M+fSMM/eaj505Fz/zfme+u2BVgUQqkEgFEqlAIhVIpAKJVCCRCiRSgeTjuq7d1wAPYFWBRCqQSAUSqUAiFUikAolUIJEKJFKB5C9PgnaCzWUb5QAAAABJRU5ErkJggg==" alt="امسح الكود وابعتلي واتساب"></div>
+      <p class="qr-hint">امسح الكود وابعتلي واتساب على طول</p>
+    </div>
+
+    <p class="sign">عبدالرحمن طارق · مهندس اختبار جودة (QA Engineer)</p>
+  </div>
+</section>
+
+<footer>صُنع لمحاضرة التوعية بمجال التكنولوجيا · آخر تحديث للمعلومات والمبادرات: يوليو ٢٠٢٦</footer>
+
+<!-- FIELD DETAIL MODAL -->
+<div class="modal-overlay" id="fieldModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modalClose" aria-label="إغلاق">×</button>
+    <div class="modal-inner" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const ICONS={
+ __I_LAPTOP__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>',
+ __I_BUG__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="6" width="8" height="14" rx="4"></rect><path d="m19 7-3 2"></path><path d="m5 7 3 2"></path><path d="M19 19l-3-2"></path><path d="m5 19 3-2"></path><path d="M20 13h-4"></path><path d="M4 13h4"></path></svg>',
+ __I_BRAIN__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.142 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"></path><path d="M12 5a3 3 0 1 1 5.997.142 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"></path></svg>',
+ __I_SHIELD__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
+ __I_PALETTE__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="1.3" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r="1.3" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r="1.3" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r="1.3" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>',
+ __I_PAL2__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="1.3" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r="1.3" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r="1.3" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r="1.3" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>',
+ __I_GLOBE__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
+ __I_BRUSH__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.6 17.9-10.7-2.9"></path><path d="M18.4 2.6a1 1 0 1 1 3 3L17.4 9.6a.5.5 0 0 0 0 .7l.9.9a2.4 2.4 0 0 1 0 3.4l-.9.9a.5.5 0 0 1-.7 0L8.4 8.4a.5.5 0 0 1 0-.7l.9-.9a2.4 2.4 0 0 1 3.4 0l.9.9a.5.5 0 0 0 .7 0z"></path><path d="M9 8c-1.8 2.7-4 3.5-6.6 3.9a.5.5 0 0 0-.3.8l7.3 8.9a1 1 0 0 0 1.2.2C12.7 20.6 16 18 16 15"></path></svg>',
+ __I_HORN__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"></path><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"></path></svg>',
+ __I_VIDEO__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8z"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg>',
+ __I_CHART__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>',
+ __I_TASKS__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h.01M8 6h13M3 12h.01M8 12h13M3 18h.01M8 18h13"></path></svg>',
+ __I_MAGIC__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 11.8 19 13M15 9h.01M17.8 6.2 19 5M3 21l9-9M12.2 6.2 11 5"></path></svg>',
+ __I_PEN__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.6 7.6"></path><circle cx="11" cy="11" r="2"></circle></svg>',
+ __I_CLOUD__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9h-1.8A7 7 0 1 0 4 16.5"></path><path d="M12 12v9M8 17l4 4 4-4"></path></svg>',
+ __I_GAME__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="11" x2="10" y2="11"></line><line x1="8" y1="9" x2="8" y2="13"></line><line x1="15" y1="12" x2="15.01" y2="12"></line><line x1="18" y1="10" x2="18.01" y2="10"></line><rect x="2" y="6" width="20" height="12" rx="2"></rect></svg>',
+ __I_NET__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="16" y="16" width="6" height="6" rx="1"></rect><path d="M12 8v4M12 12H5v4M12 12h7v4"></path></svg>',
+ __I_SIGNAL__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"></path></svg>',
+ __I_CHAT__:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>'
+};
+
+const FIELDS={
+ dev:{ic:ICONS.__I_LAPTOP__,ar:'تطوير البرمجيات',en:'Software Development',
+   what:'هو بناء التطبيقات والمواقع والأنظمة اللي بنستخدمها كل يوم، من الفكرة لحد ما تبقى منتج شغّال. بينقسم لجزء بيشوفه المستخدم (Front-End)، وجزء بيشتغل ورا الكواليس على السيرفرات وقواعد البيانات (Back-End)، وتطبيقات الموبايل (Mobile).',
+   learn:['أساسيات البرمجة ولغة أو اتنين (زي JavaScript أو Python)','بناء واجهات المواقع بـ HTML و CSS','التعامل مع قواعد البيانات والسيرفرات','بناء تطبيقات موبايل (أندرويد / iOS)'],
+   tools:['JavaScript','Python','React','Flutter','SQL','Git'],
+   jobs:'مطوّر ويب، مطوّر تطبيقات موبايل، مهندس برمجيات، Full-Stack Developer. من أكتر المجالات طلباً وأعلاها أجوراً، وفيه شغل ريموت كتير.',
+   fit:'لو بتحب تبني حاجة بإيدك وتشوف نتيجة شغلك قدامك، وعندك صبر على حل المشاكل.'},
+ qa:{ic:ICONS.__I_BUG__,ar:'اختبار الجودة (QA)',en:'Quality Assurance / Software Testing',
+   what:'شغلتك إنك تتأكد إن أي برنامج أو تطبيق شغّال صح قبل ما يوصل للناس، وتكتشف الأخطاء (Bugs) وتبلّغ عنها. ده مجال بيعتمد على التفكير المنطقي والملاحظة والتنظيم أكتر بكتير من البرمجة المعقّدة، وعشان كده مناسب جداً للناس من كليات غير تقنية.',
+   learn:['إزاي تكتب حالات اختبار (Test Cases) منظّمة','الفرق بين الاختبار اليدوي والآلي (Manual / Automation)','أدوات تتبّع الأخطاء وإدارة المشاريع','أساسيات الأتمتة بأدوات زي Selenium'],
+   tools:['Selenium','Postman','JIRA','TestNG','SQL'],
+   jobs:'مهندس اختبار جودة (QA Engineer)، Manual / Automation Tester. مطلوب في كل شركة بتعمل برامج، ونقطة دخول ممتازة لمجال التيك.',
+   fit:'لو إنت دقيق وبتلاحظ التفاصيل الصغيرة، ومنظّم، وبتحب تفكّر "إيه اللي ممكن يبوظ هنا؟".'},
+ ai:{ic:ICONS.__I_BRAIN__,ar:'الذكاء الاصطناعي والبيانات',en:'AI & Data Science',
+   what:'تعليم الكمبيوتر إنه "يفكّر" ويتعلّم من البيانات عشان ياخد قرارات أو يتنبّأ بحاجات. ده بيشمل تحليل كميات ضخمة من البيانات لاستخراج معلومات مفيدة، وبناء نماذج ذكاء اصطناعي زي اللي بتشغّل ChatGPT والترشيحات على يوتيوب.',
+   learn:['الإحصاء وأساسيات الرياضيات للبيانات','لغة Python ومكتباتها للبيانات','تحليل البيانات وتصوّرها (Visualization)','بناء نماذج تعلّم الآلة (Machine Learning)'],
+   tools:['Python','Pandas','TensorFlow','SQL','Power BI'],
+   jobs:'محلل بيانات (Data Analyst)، عالم بيانات (Data Scientist)، مهندس تعلّم آلة. المجال الأقوى والأكثر طلباً حالياً وأجوره عالية جداً.',
+   fit:'لو بتحب الأرقام والمنطق والاكتشاف، وعندك فضول تعرف "ليه" ورا كل ظاهرة.'},
+ cyber:{ic:ICONS.__I_SHIELD__,ar:'الأمن السيبراني',en:'Cybersecurity',
+   what:'حماية الأنظمة والشبكات والبيانات من الاختراق والهجمات. بتتعلّم تفكّر زي المخترق عشان تقدر تسدّ الثغرات قبل ما حد يستغلّها. مجال له علاقة مباشرة بالأمن القومي، ومطلوب جداً عالمياً.',
+   learn:['أساسيات الشبكات وأنظمة التشغيل','أنواع الهجمات وطرق الحماية منها','اختبار الاختراق (Penetration Testing)','تأمين التطبيقات والبيانات'],
+   tools:['Kali Linux','Wireshark','Metasploit','Nmap'],
+   jobs:'محلل أمن معلومات، مختبِر اختراق (Penetration Tester)، مهندس أمن سيبراني. نقص كبير في المتخصصين عالمياً يعني فرص شغل كتير.',
+   fit:'لو بتحب التحدّي وحل الألغاز، وفضولي بطبعك، وبتحب تفهم الحاجة بتشتغل إزاي من جوّه.'},
+ design:{ic:ICONS.__I_PALETTE__,ar:'الفنون الرقمية والتصميم',en:'UI/UX & Digital Arts',
+   what:'تصميم شكل التطبيقات والمواقع وتجربة المستخدم. الـ UI بيهتم بالشكل والألوان، والـ UX بيهتم بإن المستخدم يلاقي اللي عايزه بسهولة. مجال بيعتمد على الحس الفني والتفكير في راحة الناس، من غير برمجة معقّدة.',
+   learn:['مبادئ التصميم والألوان والخطوط','تصميم تجربة المستخدم (UX) والبحث','بناء النماذج الأولية (Prototypes)','أداة Figma الأساسية في المجال'],
+   tools:['Figma','Adobe XD','Photoshop','Illustrator'],
+   jobs:'مصمم UI/UX، مصمم جرافيك، Product Designer. مطلوب في كل شركة تقنية، وفيه شغل فريلانس كتير بالدولار.',
+   fit:'لو عندك حس فني وبتحب الجمال والتنظيم، وبتفكّر في راحة اللي هيستخدم.'},
+ cloud:{ic:ICONS.__I_CLOUD__,ar:'الحوسبة السحابية',en:'Cloud Computing',
+   what:'إدارة وبناء البنية التحتية للشركات على السحابة (سيرفرات بعيدة بدل أجهزة فعلية). معظم الشركات الكبيرة بتشغّل أنظمتها على السحابة دلوقتي، فالمجال ده مطلوب جداً وأجوره عالية.',
+   learn:['أساسيات الشبكات والسيرفرات','منصات السحابة (AWS / Azure / Google Cloud)','نشر التطبيقات وإدارتها على السحابة','مبادئ DevOps والأتمتة'],
+   tools:['AWS','Azure','Docker','Kubernetes','Linux'],
+   jobs:'مهندس سحابة (Cloud Engineer)، مهندس DevOps، مدير أنظمة. من أعلى المجالات أجوراً وأكثرها طلباً.',
+   fit:'لو بتحب التنظيم وإدارة الأنظمة، وبتحب تفهم البنية الكبيرة اللي بتشغّل كل حاجة.'},
+ games:{ic:ICONS.__I_GAME__,ar:'الألعاب والأنظمة المدمجة',en:'Game Dev & Embedded Systems',
+   what:'تطوير الألعاب، وكمان برمجة الأجهزة الذكية والروبوتات وإنترنت الأشياء (IoT)، يعني الكود اللي بيشغّل أجهزة فعلية زي الساعات الذكية والسيارات والأجهزة المنزلية الذكية.',
+   learn:['أساسيات البرمجة (C++ أو C#)','محرّكات الألعاب زي Unity','برمجة المتحكّمات الدقيقة (Microcontrollers)','مبادئ إنترنت الأشياء (IoT)'],
+   tools:['Unity','C++','Arduino','Raspberry Pi'],
+   jobs:'مطوّر ألعاب، مهندس أنظمة مدمجة، مهندس IoT. مجال ممتع ومتنامي خاصة مع انتشار الأجهزة الذكية.',
+   fit:'لو بتحب الألعاب أو الإلكترونيات، وبتحب تشوف الكود بتاعك بيحرّك حاجة في الواقع.'},
+ networks:{ic:ICONS.__I_NET__,ar:'الشبكات والبنية التحتية',en:'Networks & Infrastructure',
+   what:'تصميم وتشغيل وحماية الشبكات اللي بتربط أجهزة الشركات ببعض وبالإنترنت. أي شركة فيها أكتر من جهاز محتاجة حد يدير شبكتها ويأمّنها.',
+   learn:['أساسيات الشبكات وبروتوكولاتها','إعداد الراوترات والسويتشات','أمن الشبكات','الشهادات الدولية زي CCNA'],
+   tools:['Cisco','Wireshark','pfSense'],
+   jobs:'مهندس شبكات، مدير بنية تحتية، أخصائي دعم فني متقدم. مجال مستقر وله شهادات دولية معترف بها.',
+   fit:'لو بتحب تفهم إزاي الأجهزة بتتكلّم مع بعض، وبتحب الترتيب والتنظيم.'},
+ telecom:{ic:ICONS.__I_SIGNAL__,ar:'الاتصالات وتقنيات 5G',en:'Telecommunications & 5G',
+   what:'تقنيات شبكات المحمول والألياف الضوئية اللي بتوصّل الإنترنت والاتصالات لكل البلد. مع انتشار الـ 5G، المجال ده بقى مطلوب جداً، وهو من تخصصات المعهد القومي للاتصالات (NTI).',
+   learn:['أساسيات أنظمة الاتصالات','تقنيات شبكات المحمول (4G / 5G)','الألياف الضوئية','تخطيط وصيانة الشبكات'],
+   tools:['MATLAB','شبكات 5G','أنظمة الألياف الضوئية'],
+   jobs:'مهندس اتصالات، مهندس شبكات محمول، أخصائي ألياف ضوئية. مطلوب في شركات الاتصالات الكبيرة.',
+   fit:'لو خلفيتك هندسية أو بتحب الإشارات والأنظمة الكبيرة اللي بتغطّي بلد كاملة.'},
+ freelance:{ic:ICONS.__I_GLOBE__,ar:'العمل الحر',en:'Freelancing',
+   what:'مش مجال تقني بذاته، لكنه طريقة شغل: تشتغل أونلاين مع عملاء من أي مكان في العالم في أي مهارة تقنية (تصميم، برمجة، تسويق، كتابة)، وتكسب بالدولار وإنت قاعد في بيتك. كتير من مبادرات الدولة بتركّز عليه.',
+   learn:['إزاي تبني معرض أعمال (Portfolio)','التعامل مع منصات العمل الحر','التواصل مع العملاء وإدارة المشاريع','التسعير والإدارة المالية'],
+   tools:['Upwork','Mostaqel','Fiverr','LinkedIn'],
+   jobs:'تقدر تشتغل فري لانسر في أي مهارة اتعلمتها. دخل إضافي أو أساسي بالعملة الصعبة، ومرونة كاملة في وقتك ومكانك.',
+   fit:'لو بتحب الاستقلالية وتنظّم وقتك بنفسك، وعندك مهارة تقدر تبيعها أونلاين.'},
+};
+
+// ---- field detail modal ----
+const overlay=document.getElementById('fieldModal');
+const modalBody=document.getElementById('modalBody');
+const modalClose=document.getElementById('modalClose');
+let lastFocus=null;
+function openField(key){
+  const f=FIELDS[key]; if(!f)return;
+  lastFocus=document.activeElement;
+  modalBody.innerHTML=
+    '<div class="modal-icon">'+f.ic+'</div>'+
+    '<h3>'+f.ar+'</h3>'+
+    '<span class="m-en">'+f.en+'</span>'+
+    '<div class="m-section"><h5>هو إيه؟</h5><p>'+f.what+'</p></div>'+
+    '<div class="m-section"><h5>هتتعلّم إيه؟</h5><ul>'+f.learn.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
+    '<div class="m-section"><h5>أدوات شائعة</h5><div class="m-tools">'+f.tools.map(x=>'<span class="m-tool">'+x+'</span>').join('')+'</div></div>'+
+    '<div class="m-section"><h5>فرص الشغل</h5><p>'+f.jobs+'</p></div>'+
+    '<div class="m-section"><h5>مناسب ليك لو…</h5><div class="m-fit"><p>'+f.fit+'</p></div></div>';
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  modalClose.focus();
+}
+function closeField(){
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+  if(lastFocus)lastFocus.focus();
+}
+document.querySelectorAll('.lrow[data-field]').forEach(row=>{
+  row.addEventListener('click',()=>openField(row.getAttribute('data-field')));
+  row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openField(row.getAttribute('data-field'));}});
+});
+modalClose.addEventListener('click',closeField);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeField();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))closeField();});
+
+// WhatsApp follow chip (inside a row link)
+document.querySelectorAll('.wa-follow').forEach(el=>{
+  el.addEventListener('click',e=>{
+    e.preventDefault(); e.stopPropagation();
+    window.open(el.getAttribute('data-wa'),'_blank','noopener');
+  });
+});
+
+// nav hide + scrollbar + toTop
+const nav=document.getElementById('nav');
+const scrollbar=document.getElementById('scrollbar');
+const toTop=document.getElementById('toTop');
+let lastY=0;
+addEventListener('scroll',()=>{
+  const y=scrollY;
+  nav.classList.toggle('scrolled',y>20);
+  if(y>140 && y>lastY){ nav.classList.add('nav-hidden'); }
+  else { nav.classList.remove('nav-hidden'); }
+  lastY=y;
+  if(toTop) toTop.classList.toggle('show', y>400);
+  const max=document.documentElement.scrollHeight-innerHeight;
+  if(scrollbar)scrollbar.style.transform='scaleX('+(max>0?y/max:0)+')';
+});
+if(toTop){toTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));}
+
+// reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+}),{threshold:0.1, rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.reveal, .stagger').forEach(el=>io.observe(el));
+
+// ---- animated stats (counters + bars) ----
+let statsDone=false;
+function animateStats(){
+  if(statsDone)return;
+  const sec=document.getElementById('stats');
+  if(!sec)return;
+  const r=sec.getBoundingClientRect();
+  if(r.top < innerHeight*0.8){
+    statsDone=true;
+    document.querySelectorAll('[data-count]').forEach(el=>{
+      const target=+el.getAttribute('data-count');
+      const dur=1400, t0=performance.now();
+      function step(now){
+        const p=Math.min(1,(now-t0)/dur);
+        const eased=1-Math.pow(1-p,3);
+        el.textContent=Math.floor(eased*target).toLocaleString('en-US');
+        if(p<1)requestAnimationFrame(step);
+        else el.textContent=target.toLocaleString('en-US');
+      }
+      requestAnimationFrame(step);
+    });
+    document.querySelectorAll('.bar-fill').forEach(b=>{b.style.width=b.getAttribute('data-w')+'%';});
+    document.querySelectorAll('.pct').forEach(el=>{
+      const target=+el.getAttribute('data-pct');
+      const dur=1400, t0=performance.now();
+      function step(now){
+        const p=Math.min(1,(now-t0)/dur);
+        el.textContent=Math.floor((1-Math.pow(1-p,3))*target)+'%';
+        if(p<1)requestAnimationFrame(step);
+        else el.textContent=target+'%';
+      }
+      requestAnimationFrame(step);
+    });
+  }
+}
+addEventListener('scroll',animateStats);
+animateStats();
+
+// ---- subtle full-page particle background ----
+(function(){
+  const canvas=document.getElementById('bg3d');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!canvas || reduce) return;
+  const ctx=canvas.getContext('2d');
+  let W,H,DPR=Math.min(window.devicePixelRatio||1,2);
+  let pts=[];
+  function resize(){
+    W=window.innerWidth; H=window.innerHeight;
+    canvas.width=W*DPR; canvas.height=H*DPR;
+    canvas.style.width=W+'px'; canvas.style.height=H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    const target=Math.min(70,Math.floor(W*H/22000));
+    pts=[];
+    for(let i=0;i<target;i++){
+      pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*0.35,vy:(Math.random()-0.5)*0.35,z:Math.random()*0.7+0.35});
+    }
+  }
+  resize();
+  window.addEventListener('resize',resize);
+  const LINK=150;
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of pts){
+      p.x+=p.vx*p.z; p.y+=p.vy*p.z;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+    }
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const a=pts[i],b=pts[j];
+        const d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<LINK){
+          ctx.strokeStyle='rgba(37,99,235,'+((1-d/LINK)*0.12)+')';
+          ctx.lineWidth=1;
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        }
+      }
+    }
+    for(const p of pts){
+      ctx.beginPath();
+      ctx.fillStyle='rgba(56,189,248,'+((0.4+p.z*0.4)*0.6)+')';
+      ctx.arc(p.x,p.y,1.4*p.z+0.5,0,Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+// ---- scroll-driven 3D wireframe object (no libraries) ----
+(function(){
+  const canvas=document.getElementById('obj3d');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!canvas || reduce) return;
+  const ctx=canvas.getContext('2d');
+  let W,H,DPR=Math.min(window.devicePixelRatio||1,2);
+  function resize(){
+    W=window.innerWidth; H=window.innerHeight;
+    canvas.width=W*DPR; canvas.height=H*DPR;
+    canvas.style.width=W+'px'; canvas.style.height=H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  // icosahedron vertices (normalized)
+  const t=(1+Math.sqrt(5))/2;
+  let V=[[-1,t,0],[1,t,0],[-1,-t,0],[1,-t,0],[0,-1,t],[0,1,t],[0,-1,-t],[0,1,-t],[t,0,-1],[t,0,1],[-t,0,-1],[-t,0,1]];
+  V=V.map(v=>{const l=Math.hypot(v[0],v[1],v[2]);return [v[0]/l,v[1]/l,v[2]/l];});
+  // edges = closest vertex pairs
+  const E=[];
+  for(let i=0;i<V.length;i++)for(let j=i+1;j<V.length;j++){
+    const d=Math.hypot(V[i][0]-V[j][0],V[i][1]-V[j][1],V[i][2]-V[j][2]);
+    if(d<1.1) E.push([i,j]);
+  }
+  // orbit ring of dots
+  const RING=26, ring=[];
+  for(let i=0;i<RING;i++){const a=i/RING*Math.PI*2;ring.push([Math.cos(a)*1.7,0,Math.sin(a)*1.7]);}
+
+  let scroll=0, targetScroll=0;
+  addEventListener('scroll',()=>{targetScroll=scrollY;});
+
+  function rot(p,ax,ay){
+    let [x,y,z]=p;
+    // rotate Y
+    let c=Math.cos(ay),s=Math.sin(ay);
+    let x1=x*c - z*s, z1=x*s + z*c;
+    // rotate X
+    c=Math.cos(ax); s=Math.sin(ax);
+    let y1=y*c - z1*s, z2=y*s + z1*c;
+    return [x1,y1,z2];
+  }
+  function project(p,cx,cy,R){
+    const fov=3.6;
+    const s=fov/(fov+p[2]);
+    return [cx+p[0]*R*s, cy+p[1]*R*s, s, p[2]];
+  }
+
+  function frame(time){
+    // smooth scroll follow
+    scroll += (targetScroll-scroll)*0.06;
+    ctx.clearRect(0,0,W,H);
+
+    const small = W<860;
+    const R = small ? Math.min(W,H)*0.30 : Math.min(W,H)*0.26;
+    const cx = small ? W*0.5 : W*0.20;                 // empty side in RTL layout
+    const cy = H*0.52 + Math.sin(scroll*0.0016)*46;    // floats down/up with scroll
+    const ay = scroll*0.0022 + time*0.00012;           // spin with scroll + slow idle
+    const ax = 0.42 + scroll*0.0009;
+    const ringAy = -scroll*0.0016 + time*0.00018;
+
+    // edges
+    for(const [i,j] of E){
+      const a=project(rot(V[i],ax,ay),cx,cy,R);
+      const b=project(rot(V[j],ax,ay),cx,cy,R);
+      const depth=(a[2]+b[2])/2;
+      ctx.strokeStyle='rgba(56,189,248,'+(0.10+depth*0.20)+')';
+      ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
+    }
+    // vertices
+    for(const v of V){
+      const p=project(rot(v,ax,ay),cx,cy,R);
+      ctx.beginPath();
+      ctx.fillStyle='rgba(56,189,248,'+(0.35+p[2]*0.45)+')';
+      ctx.arc(p[0],p[1],1.6+p[2]*1.6,0,Math.PI*2);
+      ctx.fill();
+    }
+    // orbit ring (tilted opposite spin)
+    for(const v of ring){
+      const p=project(rot(v,0.9,ringAy),cx,cy,R);
+      ctx.beginPath();
+      ctx.fillStyle='rgba(37,99,235,'+(0.20+p[2]*0.35)+')';
+      ctx.arc(p[0],p[1],1.1+p[2]*1.1,0,Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
